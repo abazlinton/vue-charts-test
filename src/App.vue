@@ -1,17 +1,47 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <section>
+    <button @click="addRussia">Add Russia</button>
+    <GChart
+      type="GeoChart"
+      :data="chartData"
+      :options="chartOptions"
+      :events="chartEvents"
+      ref="gChart"
+    />  
+  </section>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      // Array will be automatically processed with visualization.arrayToDataTable function
+      chartData: [
+          ['Country', 'Popularity'],
+          ['Germany', 200],
+          ['United States', 300],
+          ['Brazil', 400],
+          ['Canada', 500],
+          ['France', 600],
+      ],
+      chartOptions: {
+        chart: {
+          
+        }
+      },
+      chartEvents: {
+         select: () => {          
+          const blah = this.$refs.gChart.chartObject;
+          console.log(this.chartData, blah.getSelection())
+        }
+      }
+    }
+  },
+  methods: {
+    addRussia(){
+      this.chartData.push(['Russia', 600])
+    },
   }
 }
 </script>
