@@ -3,6 +3,7 @@
     <button @click="addRussia">Add Russia</button>
     <GChart
       type="GeoChart"
+      
       :data="chartData"
       :options="chartOptions"
       :events="chartEvents"
@@ -10,6 +11,8 @@
     />  
   </section>
 </template>
+
+// :settings="{ packages: ['corechart', 'table'], mapsApiKey: 'key here' }"
 
 <script>
 
@@ -19,11 +22,6 @@ export default {
       // Array will be automatically processed with visualization.arrayToDataTable function
       chartData: [
           ['Country', 'Popularity'],
-          ['Germany', 200],
-          ['United States', 300],
-          ['Brazil', 400],
-          ['Canada', 500],
-          ['France', 600],
       ],
       chartOptions: {
         chart: {
@@ -37,6 +35,11 @@ export default {
         }
       }
     }
+  },
+  mounted(){
+    fetch('https://restcountries.eu/rest/v2/all')
+      .then(response => response.json())
+      .then(countries => this.chartData = this.chartData.concat(countries.map(country => [country.alpha2Code, country.population])))
   },
   methods: {
     addRussia(){
